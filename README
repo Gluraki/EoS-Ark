@@ -1,0 +1,165 @@
+# ARK Server Tracker Discord Bot
+
+A Discord bot that tracks online players from your ARK: Survival Evolved server using the BattleMetrics API.
+
+**Server being tracked:** https://www.battlemetrics.com/servers/ark/33843327
+
+## Features
+
+- 📊 **Real-time Server Status** - Check server status, player count, and map info
+- 👥 **Player List** - View all currently online players
+- 📢 **Automatic Notifications** - Get notified when players join or leave
+- ⏱️ **Auto-updates** - Checks server every 5 minutes
+- 🎨 **Rich Embeds** - Beautiful Discord embeds with server information
+
+## Commands
+
+All commands use the prefix `!ark`
+
+| Command | Description | Permission |
+|---------|-------------|------------|
+| `!ark status` | Display current server status and player count | Everyone |
+| `!ark players` | List all currently online players | Everyone |
+| `!ark track` | Start tracking player changes in the current channel | Admin |
+| `!ark untrack` | Stop tracking player changes | Admin |
+| `!ark help` | Display help information | Everyone |
+
+## Setup Instructions
+
+### 1. Create a Discord Bot
+
+1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
+2. Click "New Application" and give it a name
+3. Go to the "Bot" section and click "Add Bot"
+4. Under "Privileged Gateway Intents", enable:
+   - Message Content Intent
+5. Click "Reset Token" to get your bot token (save this!)
+6. Go to "OAuth2" → "URL Generator"
+7. Select scopes:
+   - `bot`
+   - `applications.commands`
+8. Select bot permissions:
+   - Read Messages/View Channels
+   - Send Messages
+   - Embed Links
+   - Read Message History
+9. Copy the generated URL and use it to invite the bot to your server
+
+### 2. Install Dependencies
+
+```bash
+# Install Python dependencies
+pip install -r requirements.txt
+```
+
+### 3. Configure the Bot
+
+Create a `config.json` file with your Discord bot token:
+
+```json
+{
+  "discord_token": "YOUR_DISCORD_BOT_TOKEN_HERE"
+}
+```
+
+Or set an environment variable:
+
+```bash
+export DISCORD_BOT_TOKEN="your_token_here"
+```
+
+### 4. Run the Bot
+
+```bash
+python ark_tracker_bot.py
+```
+
+## Usage Examples
+
+### Check Server Status
+```
+!ark status
+```
+Returns an embed with:
+- Server name and status (online/offline)
+- Current players / Max players
+- Map name
+- Server IP and port
+- Server rank
+
+### List Current Players
+```
+!ark players
+```
+Shows a list of all players currently online.
+
+### Enable Tracking (Admin Only)
+```
+!ark track
+```
+The bot will send notifications in the current channel whenever:
+- A player joins the server
+- A player leaves the server
+
+### Disable Tracking (Admin Only)
+```
+!ark untrack
+```
+Stops sending player change notifications.
+
+## Configuration Options
+
+You can modify these settings in `ark_tracker_bot.py`:
+
+```python
+BATTLEMETRICS_SERVER_ID = "33843327"  # Your server ID
+UPDATE_INTERVAL_MINUTES = 5            # How often to check for updates
+```
+
+## BattleMetrics API
+
+This bot uses the public BattleMetrics API to fetch server information. No API key is required for basic server info and player lists.
+
+API Endpoints used:
+- `GET /servers/{id}` - Server information
+- `GET /servers/{id}?include=player` - Server info with players
+
+## Troubleshooting
+
+### Bot doesn't respond to commands
+- Make sure Message Content Intent is enabled in the Discord Developer Portal
+- Verify the bot has permission to read and send messages in the channel
+
+### "Failed to fetch server information" error
+- Check that the server ID is correct
+- Verify your internet connection
+- The BattleMetrics API might be temporarily unavailable
+
+### Player tracking not working
+- Make sure you ran `!ark track` in the desired channel
+- Only administrators can enable/disable tracking
+- The bot checks every 5 minutes, so there may be a delay
+
+## Technical Details
+
+- **Language:** Python 3.8+
+- **Framework:** discord.py
+- **API:** BattleMetrics REST API
+- **Update Frequency:** Every 5 minutes
+- **Async:** Fully asynchronous using aiohttp
+
+## License
+
+This is free and open source software. Feel free to modify and use it for your own servers!
+
+## Support
+
+For issues or questions, please check:
+1. This README
+2. The `!ark help` command in Discord
+3. BattleMetrics API documentation at https://www.battlemetrics.com/developers
+
+## Credits
+
+- Server data provided by [BattleMetrics](https://www.battlemetrics.com/)
+- Built with [discord.py](https://github.com/Rapptz/discord.py)
