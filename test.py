@@ -68,8 +68,32 @@ class BattleMetricsBot(commands.Bot):
                     player_attrs = player.get('attributes', {})
                     player_name = player_attrs.get('name', 'Unknown')
                     player_id = player_attrs.get('id', 'N/A')
+                    
+                    # Get time on server from meta.metadata
+                    time_on_server = 0
+                    meta = player.get('meta', {})
+                    metadata = meta.get('metadata', [])
+                    
+                    # Find the time value in metadata array
+                    for item in metadata:
+                        if item.get('key') == 'time':
+                            time_on_server = item.get('value', 0)
+                            break
+                    
+                    # Convert seconds to hours and minutes
+                    try:
+                        time_seconds = int(time_on_server) if time_on_server else 0
+                        hours = time_seconds // 3600
+                        minutes = (time_seconds % 3600) // 60
+                        
+                        if hours > 0:
+                            time_str = f"{hours}h {minutes}m"
+                        else:
+                            time_str = f"{minutes}m"
+                    except (ValueError, TypeError):
+                        time_str = "N/A"
 
-                    player_line = f"[ {idx} | {player_name} | {player_id} ]"
+                    player_line = f"[ {idx} | {player_name} | {player_id} | {time_str} ]"
                     player_lines.append(player_line)
                 except Exception as e:
                     print(f"Error processing player {idx}: {e}")
