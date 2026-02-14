@@ -14,7 +14,7 @@ load_dotenv()
 DISCORD_TOKEN = os.getenv('DISCORD_TOKEN')
 CHANNEL_ID = int(os.getenv('CHANNEL_ID'))  # Replace with your channel ID
 SERVER_ID = os.getenv('SERVER_ID')
-CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', '5'))
+CHECK_INTERVAL = int(os.getenv('CHECK_INTERVAL', '1'))
 BATTLEMETRICS_API = f'https://api.battlemetrics.com/servers/{SERVER_ID}'
 NICKNAMES_FILE = 'nicknames.json'
 
